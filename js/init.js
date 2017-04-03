@@ -26,6 +26,7 @@ $(document).ready(function(){
     $('.tooltipped').tooltip({delay: 50});
     $('select').material_select();
     $('.modal').modal();
+    $('ul.tabs').tabs();
 });
 
 $('#selectall').click(function () {
