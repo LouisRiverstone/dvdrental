@@ -191,6 +191,15 @@ class Customer extends Crud
         return $stmt->execute();
     }
 
+    public function searchLoginPassword($login,$password){
+        $sql = "SELECT * FROM $this->table WHERE login = :l AND password = :p";
+        $stmt = DB::prepare($sql);
+        $stmt->bindParam(':l', $login);
+        $stmt->bindParam(':p', $password);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
 
 
 

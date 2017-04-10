@@ -2,7 +2,7 @@
 
 require_once("Crud.php");
 
-class Actors extends Crud {
+class Actor extends Crud {
     protected $table = "actor";
     private $first_name;
     private $last_name;

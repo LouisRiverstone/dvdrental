@@ -1,7 +1,7 @@
 /**
  * Created by Luiz Gustavo on 12/02/2017.
  */
-(function($){
+ (function($){
     $(function(){
 
         $('.button-collapse').sideNav();
@@ -27,7 +27,10 @@ $(document).ready(function(){
     $('select').material_select();
     $('.modal').modal();
     $('ul.tabs').tabs();
+    $('.carousel').carousel();
 });
+
+$('.carousel.carousel-slider').carousel({fullWidth: true});
 
 $('#selectall').click(function () {
     if (this.checked) {

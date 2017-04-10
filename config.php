@@ -14,4 +14,6 @@ define('FOOTER_TEMPLATE', ABSPATH . 'inc/footer.php');
 
 
 
+
+
 ?>
