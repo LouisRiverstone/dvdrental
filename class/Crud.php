@@ -1,6 +1,9 @@
 <?php
 
 require_once('DB.php');
+use phpml\ModelManager;
+
+
 
 
 abstract class Crud extends DB {
