@@ -2,8 +2,8 @@
 
 require_once("Crud.php");
 
-class Film extends Crud {
-    protected $table = "film";
+class Film_Category extends Crud {
+    protected $table = "film_category";
     
 
     function getDatetimeNow() {
@@ -15,16 +15,12 @@ class Film extends Crud {
 
     public function create()
     {
-
+     
     }
 
     public function update($id)
     {
-
-    }
-
-    function porcentagem ( $valor, $total ) {
-        return (( $valor * 100 ) / $total);
+        
     }
 
 }

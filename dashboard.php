@@ -1,6 +1,10 @@
-<?php 
+<?php
 require_once("config.php");
 require_once("class/Film.php");
+require_once("class/Film_Category.php");
+require_once("class/Rental.php");
+require_once("class/Inventory.php");
+require_once("class/Category.php");
 
 include("inc/header.php");
 
@@ -16,16 +20,84 @@ if(!isset($_SESSION['customer'])){
 <div class="row">
 	<div class="col s12">
 		<ul class="tabs">
-			<li class="tab col s3"><a href="#Home">Home</a></li>
-			<li class="tab col s3"><a href="#AllFilms">Movie List</a></li>
-			<li class="tab col s3"><a href="#test3">Disabled Tab</a></li>
-			<li class="tab col s3"><a class="active" href="#Profile">Profile</a></li>
+			<li class="tab col s4"><a class="active" href="#Home">Home</a></li>
+			<li class="tab col s4"><a href="#AllFilms">Movie List</a></li>
+			<li class="tab col s4"><a href="#Profile">Profile</a></li>
 		</ul>
 	</div>
-	<div id="Home" class="col s12">Test 1</div>
+	<div id="Home" class="col s12">
+		<div class="row">
+			<h2>Sugestões Por Genero</h2>
+			<div class="carousel" data-indicators="true">
+				<?php
+				$generos = array();
+				$rental = new Rental();
+				$rental = $rental->read($customer->customer_id,"customer_id");
+				foreach ($rental as $r) {
+						//echo $r->rental_date;
+					$inventory = new Inventory();
+					$inventory = $inventory->read($r->inventory_id,"inventory_id");
+					foreach ($inventory as $i) {
+						$film = new Film();
+						$film = $film->read($i->film_id,"film_id");
+						foreach ($film as $f) {
+							$film_category = new Film_Category();
+							$film_category = $film_category->read($f->film_id,"film_id");
+							foreach ($film_category as $fc) {
+								array_push($generos, $fc->category_id);
+							}
+						}
+					}
+				}
+
+				//Parte de Gerenciamento Dinamico
+				$film_category = new Film_Category();
+				$film = new Film();
+				$category = new Category();
+				$total = count($generos);
+				$cont = 0;
+				$nc = 0;
+				$contagem = (array_count_values($generos));
+				arsort($contagem);
+				foreach($contagem AS $numero => $vezes) {
+					$cont = round(Film::porcentagem($vezes,$total)*0.1);
+					for ($i=0; $i < $cont; $i++) {
+						$fc = $film_category->randomRead($numero,"category_id");
+						foreach ($fc as $fcc) {
+							$fm = $film->read($fcc->film_id);
+							$cat = $category->read($fcc->category_id,"category_id");
+							foreach ($cat as $c ) {
+								
+								$nc++;
+								?>
+
+								<div class="carousel-item red white-text col s4" href="#one!">
+									
+									<h2><?php echo $fm->title; ?></h2>
+									<a href="filminfo.php?id=<?php echo  $fm->film_id; ?>" class="tooltipped secondary-content white-text" data-position="bottom" data-delay="50" data-tooltip="Detalhes de <?php echo  $fm->title; ?>">
+										<p class="white-text"><?php echo $fm->description; ?></p>
+										<h5>Porque assistiu: <?php echo $c->name; ?></h5>
+									</a>
+								</div>
+								<?php
+							}
+						}
+					}
+				}
+				echo $nc;
+				?>
+
+
+
+
+
+
+			</div>
+		</div>
+	</div>
 	<div id="AllFilms" class="col s12">
 		<ul class="collection">
-			<?php 
+			<?php
 			$film = new Film();
 			$film = $film->readAll("title");
 
@@ -45,7 +117,6 @@ if(!isset($_SESSION['customer'])){
 		</ul>
 
 	</div>
-	<div id="test3" class="col s12">Test 3</div>
 	<div id="Profile" class="col s12">
 		<form action="altercustomer.php" method="POST">
 			<div class="row">
@@ -62,7 +133,7 @@ if(!isset($_SESSION['customer'])){
 							<p>Email: <input type="text" name="Email" value="<?php echo $customer->email ;?>"></p>
 							<p>Active: <?php echo $customer->active ;?></p>
 							<p>Creation Date: <input type="date" name="create_date" value="<?php echo $customer->create_date ;?>"></p>
-							<p>Last Update: 
+							<p>Last Update:
 								<input type="datetime" name="last_update" value="<?php echo $customer->last_update ;?>"></p>
 								<p>Old Password: <input type="Password" name="old_password"></p>
 								<p>New Password: <input type="Password" name="new_password"></p>
@@ -77,7 +148,7 @@ if(!isset($_SESSION['customer'])){
 			</form>
 		</div>
 
-		<?php 
+		<?php
 
 		include("inc/footer.php");
 

@@ -28,6 +28,25 @@ abstract class Crud extends DB {
         }
     }
 
+    public function randomRead($id = null, $searchName = null){
+        $tblId = $this->table."_id";
+        if($id != null && $searchName == null){
+            $sql = "SELECT * FROM $this->table WHERE $tblId = :id ORDER BY RANDOM() LIMIT 1";
+            $stmt = DB::prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch();
+        }else if($searchName != null && $id != null){
+            $sql = "SELECT * FROM $this->table WHERE $searchName = :id ORDER BY RANDOM() LIMIT 1";
+            $stmt = DB::prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        }else{
+            return null;
+        }
+    }
+
     public function readAll($orderBy = null){
 
         if($orderBy == null){
@@ -49,4 +68,5 @@ abstract class Crud extends DB {
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
 }
