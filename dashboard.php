@@ -72,9 +72,8 @@ if(!isset($_SESSION['customer'])){
 								?>
 
 								<div class="carousel-item red white-text col s4" href="#one!">
-									
-									<h2><?php echo $fm->title; ?></h2>
 									<a href="filminfo.php?id=<?php echo  $fm->film_id; ?>" class="tooltipped secondary-content white-text" data-position="bottom" data-delay="50" data-tooltip="Detalhes de <?php echo  $fm->title; ?>">
+										<h2><?php echo $fm->title; ?></h2>
 										<p class="white-text"><?php echo $fm->description; ?></p>
 										<h5>Porque assistiu: <?php echo $c->name; ?></h5>
 									</a>
@@ -84,7 +83,7 @@ if(!isset($_SESSION['customer'])){
 						}
 					}
 				}
-				echo $nc;
+				//echo $nc;
 				?>
 
 
